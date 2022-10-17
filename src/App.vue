@@ -2,7 +2,7 @@
 <div>
 
   <template v-if="this.question">
-    <ScoreBoard />
+    <ScoreBoard :winCount="this.winCount" :looseCount="this.looseCount"/>
 
     <h1 v-html="this.question"></h1>
     <br>
