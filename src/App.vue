@@ -2,6 +2,7 @@
 <div>
 
   <template v-if="this.question">
+    <ScoreBoard />
 
     <h1 v-html="this.question"></h1>
     <br>
@@ -30,14 +31,17 @@
 
 <script>
 
+
 import HelloWorld from "./components/HelloWorld.vue"
+import ScoreBoard from "./components/ScoreBoard.vue"
 
 
 export default {
   name: 'App',
   components: {
   
-    HelloWorld
+    HelloWorld,
+    ScoreBoard,
 },
 
   data() {
@@ -47,6 +51,8 @@ export default {
       correctAnswer: undefined,
       chosenAnswer : undefined,
       answer_submitted : false,
+      winCount: 0,
+      looseCount: 0,
     }
   },
   computed: {
@@ -63,15 +69,18 @@ export default {
         alert("wrong")
       } else {
         if (this.chosenAnswer === this.correctAnswer) {
-          alert("bonne réponse")
+          this.winCount++
         } else {
-          alert("mauvaise réponse")
+          this.looseCount++
         }
       }
       
     },
 
     getNewQuestion() {
+      this.answer_submitted = false,
+      this.chosenAnswer = undefined,
+      this.question = undefined,
 
       this.axios
     .get("https://opentdb.com/api.php?amount=1&category=12&difficulty=easy&type=boolean")
