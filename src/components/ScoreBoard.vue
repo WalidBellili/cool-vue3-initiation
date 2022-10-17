@@ -6,7 +6,10 @@
 
 <script>
 export default {
-    props : ["winCount", "looseCount"]
+    props : {
+        winCount: Number,
+        looseCount: Number,
+    }
 
 }
 
