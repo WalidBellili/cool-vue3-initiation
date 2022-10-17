@@ -9,22 +9,35 @@
   
     <template v-for="(answer, index) in this.answers " v-bind:key="index">
   
-      <input type="radio" name="options" :value="answer" v-model="this.chosen_answer">
+      <input type="radio" :disabled="this.answer_submitted" name="options" :value="answer" v-model="this.chosen_answer">
       <label v-html="answer"></label>
     </template>
    
     <button @click="this.submitAnswer()" type="button">send</button>
   </template>
+
+  <section v-if="this.answer_submitted" class="result">
+    <h4 v-if="this.chosen_answer == this.correctAnswer">Vous avez choisi la bonne réponse était "{{this.correctAnswer}}"</h4>
+    <h4 v-else>Vous avez choisi la mauvaise réponse</h4>
+    <button>Next</button>
+  </section>
   
+  <HelloWorld message="efegegergz"/>
 </div>
+
 </template>
 
 <script>
 
+import HelloWorld from "./components/HelloWorld.vue"
 
 
 export default {
   name: 'App',
+  components: {
+  
+    HelloWorld
+},
 
   data() {
     return {
@@ -32,6 +45,7 @@ export default {
       incorrectAnswer: undefined,
       correctAnswer: undefined,
       chosen_answer : undefined,
+      answer_submitted : false,
     }
   },
   computed: {
@@ -43,12 +57,14 @@ export default {
   },
   methods: {
     submitAnswer() {
-      
+      this.answer_submitted = true
       if (!this.chosen_answer) {
         alert("wrong")
       } else {
         if (this.chosen_answer === this.correctAnswer) {
-          alert("bonne reponse")
+          alert("bonne réponse")
+        } else {
+          alert("mauvaise réponse")
         }
       }
       
