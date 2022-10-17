@@ -9,17 +9,18 @@
   
     <template v-for="(answer, index) in this.answers " v-bind:key="index">
   
-      <input type="radio" :disabled="this.answer_submitted" name="options" :value="answer" v-model="this.chosen_answer">
+      <input type="radio" :disabled="this.answer_submitted" name="options" :value="answer" v-model="this.chosenAnswer">
       <label v-html="answer"></label>
     </template>
    
-    <button @click="this.submitAnswer()" type="button">send</button>
+    <button @click="this.submitAnswer()" v-if="!this.answer_submitted" type="button">send</button>
   </template>
 
   <section v-if="this.answer_submitted" class="result">
-    <h4 v-if="this.chosen_answer == this.correctAnswer">Vous avez choisi la bonne réponse était "{{this.correctAnswer}}"</h4>
+    <h4 v-if="this.chosenAnswer == this.correctAnswer" 
+    v-html="'Vous avez choisi la bonne réponse était' + this.correctAnswer"></h4>
     <h4 v-else>Vous avez choisi la mauvaise réponse</h4>
-    <button>Next</button>
+    <button @click="this.getNewQuestion()">Next</button>
   </section>
   
   <HelloWorld message="efegegergz"/>
@@ -44,7 +45,7 @@ export default {
       question: undefined,
       incorrectAnswer: undefined,
       correctAnswer: undefined,
-      chosen_answer : undefined,
+      chosenAnswer : undefined,
       answer_submitted : false,
     }
   },
@@ -58,10 +59,10 @@ export default {
   methods: {
     submitAnswer() {
       this.answer_submitted = true
-      if (!this.chosen_answer) {
+      if (!this.chosenAnswer) {
         alert("wrong")
       } else {
-        if (this.chosen_answer === this.correctAnswer) {
+        if (this.chosenAnswer === this.correctAnswer) {
           alert("bonne réponse")
         } else {
           alert("mauvaise réponse")
@@ -69,10 +70,10 @@ export default {
       }
       
     },
-  },
 
-  created() {
-    this.axios
+    getNewQuestion() {
+
+      this.axios
     .get("https://opentdb.com/api.php?amount=1&category=12&difficulty=easy&type=boolean")
     .then((response) => {
       this.question = response.data.results[0].question,
@@ -83,6 +84,12 @@ export default {
   console.log(response.data.results[0])
 
 })
+
+    }
+  },
+
+  created() {
+    this.getNewQuestion()
   }
   
 }
