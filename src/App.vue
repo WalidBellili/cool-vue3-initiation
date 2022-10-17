@@ -9,13 +9,13 @@
   
     <template v-for="(answer, index) in this.answers " v-bind:key="index">
   
-      <input type="radio" name="options" value="answer">
+      <input type="radio" name="options" :value="answer" v-model="this.chosen_answer">
       <label v-html="answer"></label>
     </template>
    
+    <button @click="this.submitAnswer()" type="button">send</button>
   </template>
   
-  <button type="button">send</button>
 </div>
 </template>
 
@@ -31,6 +31,7 @@ export default {
       question: undefined,
       incorrectAnswer: undefined,
       correctAnswer: undefined,
+      chosen_answer : undefined,
     }
   },
   computed: {
@@ -38,7 +39,20 @@ export default {
       let answers = JSON.parse(JSON.stringify(this.incorrectAnswer))
       answers.splice(Math.round(Math.random() * answers.length), 0, this.correctAnswer)
       return answers
-    }
+    },
+  },
+  methods: {
+    submitAnswer() {
+      
+      if (!this.chosen_answer) {
+        alert("wrong")
+      } else {
+        if (this.chosen_answer === this.correctAnswer) {
+          alert("bonne reponse")
+        }
+      }
+      
+    },
   },
 
   created() {
